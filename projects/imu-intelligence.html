@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physics-Based IMU Intelligence - Ankit Karki</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="container">
+        <nav><a href="../index.html">← Back to home</a></nav>
+
+        <article>
+            <h1>Physics-Based IMU Intelligence</h1>
+            <p class="tech-stack">Raspberry Pi · ONNX · Kalman Filter · Edge AI</p>
+            <p class="links">
+                <a href="https://github.com/Ankit-x1/project-repo">GitHub Repository</a>
+            </p>
+
+            <section>
+                <h2>Problem</h2>
+                <p>
+                    Many sensing deployments need high-rate anomaly detection close to the sensor to reduce bandwidth,
+                    improve latency, and continue operating with limited connectivity. The goal was to build a system
+                    that fuses IMU signals using physics-based filtering while running a compact ML model on low-power
+                    edge hardware.
+                </p>
+            </section>
+
+            <section>
+                <h2>Technical Approach</h2>
+
+                <h3>System Architecture</h3>
+                <ul>
+                    <li><strong>Sensor fusion:</strong> Kalman filtering to stabilize estimates and reduce noise</li>
+                    <li><strong>ML inference:</strong> LSTM-based anomaly scoring compiled to ONNX for deployment</li>
+                    <li><strong>Edge runtime:</strong> optimized inference loop for continuous streaming at high sampling rates</li>
+                </ul>
+
+                <h3>Data Processing</h3>
+                <ul>
+                    <li>Windowed streaming features with overlap for low-latency updates</li>
+                    <li>Per-axis normalization and drift compensation</li>
+                    <li>Optional downsampling to match compute budgets while preserving transient events</li>
+                </ul>
+
+                <h3>Deployment Details</h3>
+                <ul>
+                    <li>Model quantization for smaller memory footprint and faster inference</li>
+                    <li>Profiling and batching strategies tuned for Raspberry Pi CPU constraints</li>
+                    <li>Logging of anomaly scores and filter residuals for debugging in the field</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Results</h2>
+                <ul>
+                    <li><strong>Real-time performance:</strong> sustained streaming inference at 100-1000 Hz depending on configuration</li>
+                    <li><strong>Latency:</strong> low millisecond-scale per-window inference on CPU with quantized ONNX runtime</li>
+                    <li><strong>Robustness:</strong> improved stability by combining learned scores with physics-based residual checks</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Key Challenges</h2>
+                <ul>
+                    <li><strong>Compute constraints:</strong> balanced model size, window length, and sampling rate to hit real-time limits</li>
+                    <li><strong>Sensor noise:</strong> tuned filter parameters and validated against vibration-heavy scenarios</li>
+                    <li><strong>Edge debugging:</strong> added telemetry for filter residuals to isolate failures vs. true anomalies</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Learnings & Future Work</h2>
+                <ul>
+                    <li>Combining physics-based filtering with ML improves reliability under domain shifts</li>
+                    <li>Quantization and profiling are required to make ML practical on constrained devices</li>
+                    <li><strong>Next steps:</strong> multi-sensor fusion, online calibration, and better uncertainty estimation for anomaly scores</li>
+                </ul>
+            </section>
+        </article>
+
+        <footer>
+            <p><a href="../index.html">← Back to home</a></p>
+        </footer>
+    </div>
+</body>
+</html>

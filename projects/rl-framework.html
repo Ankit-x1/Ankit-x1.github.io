@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Industrial RL Framework - Ankit Karki</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="container">
+        <nav><a href="../index.html">← Back to home</a></nav>
+
+        <article>
+            <h1>Industrial RL Framework</h1>
+            <p class="tech-stack">JAX · PyTorch · PPO/TRPO/SAC · Docker · CI/CD</p>
+            <p class="links">
+                <a href="https://github.com/Ankit-x1/project-repo">GitHub Repository</a>
+            </p>
+
+            <section>
+                <h2>Problem</h2>
+                <p>
+                    Reinforcement learning results can be hard to reproduce in robotics and control because
+                    training pipelines depend on simulator versions, random seeds, and inconsistent experiment
+                    tracking. For real deployments, pure RL policies can also be brittle when operating conditions
+                    shift. The goal was to build a framework that supports reproducible training and evaluation,
+                    while enabling hybrid control strategies that combine RL with classical controllers.
+                </p>
+            </section>
+
+            <section>
+                <h2>Technical Approach</h2>
+
+                <h3>Framework Design</h3>
+                <ul>
+                    <li><strong>Modular components:</strong> environments, policies, replay buffers, evaluators, and logging</li>
+                    <li><strong>Algorithm support:</strong> PPO, TRPO, and SAC with shared interfaces</li>
+                    <li><strong>Hybrid control:</strong> RL policy outputs are combined with PID/MPC baselines for safety and stability</li>
+                </ul>
+
+                <h3>Training & Evaluation Pipeline</h3>
+                <ul>
+                    <li>Deterministic seeding and standardized config files for experiments</li>
+                    <li>Containerized execution via Docker for consistent environments across machines</li>
+                    <li>Automated evaluation runs with fixed test scenarios and reporting artifacts</li>
+                </ul>
+
+                <h3>Implementation Details</h3>
+                <ul>
+                    <li><strong>JAX acceleration:</strong> vectorized rollouts and JIT-compiled update steps where applicable</li>
+                    <li><strong>PyTorch interoperability:</strong> model definitions and export utilities for deployment</li>
+                    <li><strong>CI checks:</strong> basic smoke tests for training loops and environment reset/step correctness</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Results</h2>
+                <ul>
+                    <li><strong>Reproducibility:</strong> matched learning curves across runs when using fixed seeds and pinned containers</li>
+                    <li><strong>Stability:</strong> hybrid controller reduced catastrophic episodes versus pure RL baselines in stress tests</li>
+                    <li><strong>Experiment velocity:</strong> faster iteration from standardized configs and automated evaluation</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Key Challenges</h2>
+                <ul>
+                    <li><strong>Version drift:</strong> solved by pinning dependencies in container images and recording metadata per run</li>
+                    <li><strong>Reward shaping:</strong> iterated with ablations to avoid exploiting simulator artifacts</li>
+                    <li><strong>Policy safety:</strong> added action clipping and baseline fallbacks for out-of-distribution states</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Learnings & Future Work</h2>
+                <ul>
+                    <li>Reproducibility is primarily an engineering problem: configs, seeds, and environment control matter as much as algorithms</li>
+                    <li>Hybrid control can improve real-world robustness without discarding RL benefits</li>
+                    <li><strong>Next steps:</strong> offline RL support, domain randomization utilities, and benchmark suites for robotics tasks</li>
+                </ul>
+            </section>
+        </article>
+
+        <footer>
+            <p><a href="../index.html">← Back to home</a></p>
+        </footer>
+    </div>
+</body>
+</html>

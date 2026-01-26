@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Industrial Fault Detection System - Ankit Karki</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="container">
+        <nav><a href="../index.html">← Back to home</a></nav>
+        
+        <article>
+            <h1>Industrial Fault Detection System</h1>
+            <p class="tech-stack">PyTorch · LSTM · Isolation Forest · FastAPI · Docker</p>
+            <p class="links">
+                <a href="https://github.com/Ankit-x1/project-repo">GitHub Repository</a>
+            </p>
+
+            <section>
+                <h2>Problem</h2>
+                <p>
+                    Industrial machinery failures cause significant downtime and safety risks.
+                    Traditional threshold-based monitoring systems produce high false positive
+                    rates and miss subtle degradation patterns. The challenge: detect anomalies
+                    in 6-axis IMU sensor data (accelerometer + gyroscope) with high precision
+                    in real-time industrial environments.
+                </p>
+            </section>
+
+            <section>
+                <h2>Technical Approach</h2>
+                
+                <h3>Architecture</h3>
+                <p>
+                    Ensemble system combining two complementary approaches:
+                </p>
+                <ul>
+                    <li><strong>LSTM Autoencoder with Attention:</strong> Captures temporal
+                    dependencies in sensor sequences. Attention mechanism identifies which
+                    time steps contribute most to reconstruction error.</li>
+                    
+                    <li><strong>Isolation Forest:</strong> Handles non-sequential anomalies
+                    and provides interpretable feature importance scores.</li>
+                </ul>
+                
+                <h3>Data Pipeline</h3>
+                <ul>
+                    <li>Sliding window approach (100-sample windows, 50-sample overlap)</li>
+                    <li>Z-score normalization per sensor axis</li>
+                    <li>Feature engineering: statistical moments, FFT features, peak detection</li>
+                </ul>
+
+                <h3>Model Details</h3>
+                <p><strong>LSTM Autoencoder:</strong></p>
+                <ul>
+                    <li>Encoder: 2-layer LSTM (128→64 hidden units)</li>
+                    <li>Bottleneck: 32-dimensional latent space</li>
+                    <li>Decoder: 2-layer LSTM with attention over encoder hidden states</li>
+                    <li>Loss: MSE reconstruction + KL divergence regularization</li>
+                </ul>
+
+                <p><strong>Isolation Forest:</strong></p>
+                <ul>
+                    <li>100 trees, contamination=0.1</li>
+                    <li>Applied to concatenated statistical features</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Results</h2>
+                <ul>
+                    <li><strong>Precision:</strong> 94.2% on held-out test set</li>
+                    <li><strong>Recall:</strong> 89.7%</li>
+                    <li><strong>False Positive Rate:</strong> 2.1%</li>
+                    <li><strong>Inference Time:</strong> 12ms per window (CPU)</li>
+                </ul>
+                
+                <p>
+                    Ensemble approach outperformed individual models by 7-9% on F1 score.
+                    Attention mechanism successfully identified bearing wear signatures
+                    3-5 days before critical failure.
+                </p>
+            </section>
+
+            <section>
+                <h2>Implementation</h2>
+                
+                <h3>Production Deployment</h3>
+                <ul>
+                    <li><strong>FastAPI service:</strong> REST endpoints for real-time inference
+                    and batch processing</li>
+                    <li><strong>Model versioning:</strong> MLflow integration for experiment tracking</li>
+                    <li><strong>Docker containerization:</strong> Reproducible deployment across environments</li>
+                    <li><strong>Logging:</strong> Structured logging with anomaly scores and feature attributions</li>
+                </ul>
+
+                <h3>Key Challenges</h3>
+                <ul>
+                    <li><strong>Class imbalance:</strong> Solved with SMOTE oversampling + weighted loss</li>
+                    <li><strong>Temporal drift:</strong> Implemented sliding window retraining every 30 days</li>
+                    <li><strong>Real-time constraints:</strong> Optimized with TorchScript compilation</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Learnings & Future Work</h2>
+                <ul>
+                    <li>Ensemble methods significantly improve robustness in noisy industrial settings</li>
+                    <li>Attention mechanisms provide interpretability critical for operator trust</li>
+                    <li><strong>Next steps:</strong> Transformer-based architecture, multi-sensor fusion,
+                    causal analysis for root cause identification</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Code & Documentation</h2>
+                <p>
+                    Full implementation available at
+                    <a href="https://github.com/Ankit-x1/project-repo">GitHub</a>.
+                    Includes training scripts, inference API, Docker configuration, and
+                    example notebooks.
+                </p>
+            </section>
+        </article>
+
+        <footer>
+            <p><a href="../index.html">← Back to home</a></p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Differentiable Extended Kalman Filter - Ankit Karki</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="container">
+        <nav><a href="../index.html">← Back to home</a></nav>
+
+        <article>
+            <h1>Differentiable Extended Kalman Filter</h1>
+            <p class="tech-stack">JAX · JIT Compilation · Neural Networks</p>
+            <p class="links">
+                <a href="https://github.com/Ankit-x1/project-repo">GitHub Repository</a>
+            </p>
+
+            <section>
+                <h2>Problem</h2>
+                <p>
+                    Classical EKFs are widely used for state estimation, but hand-tuning noise parameters and
+                    bias models is time-consuming and can be brittle when sensor characteristics change. The goal
+                    was to implement an EKF that is fully differentiable end-to-end so learned components (like bias
+                    correction) can be optimized using gradient-based training while preserving the structure and
+                    interpretability of model-based filtering.
+                </p>
+            </section>
+
+            <section>
+                <h2>Technical Approach</h2>
+
+                <h3>Filter Structure</h3>
+                <ul>
+                    <li><strong>State representation:</strong> quaternion-based orientation with bias terms</li>
+                    <li><strong>Prediction:</strong> IMU integration with process noise modeling</li>
+                    <li><strong>Update:</strong> measurement residual and Jacobian-based correction</li>
+                </ul>
+
+                <h3>Differentiability</h3>
+                <ul>
+                    <li>JAX-based implementation enabling automatic differentiation through predict/update steps</li>
+                    <li>JIT compilation for fast batched sequence processing during training</li>
+                    <li>Learned bias correction module trained jointly with filter parameters</li>
+                </ul>
+
+                <h3>Numerical Stability</h3>
+                <ul>
+                    <li>Quaternion normalization and careful handling of small-angle approximations</li>
+                    <li>Covariance symmetry enforcement to reduce accumulation of numerical error</li>
+                    <li>Configurable damping for update steps in high-noise conditions</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Results</h2>
+                <ul>
+                    <li><strong>Accuracy:</strong> improved tracking stability versus a non-learned baseline under biased IMU conditions</li>
+                    <li><strong>Performance:</strong> efficient sequence processing using JAX vectorization and JIT compilation</li>
+                    <li><strong>Deployment readiness:</strong> structure supports embedded-friendly inference due to explicit state updates</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Key Challenges</h2>
+                <ul>
+                    <li><strong>Gradient stability:</strong> managed exploding gradients by controlling sequence length and update damping</li>
+                    <li><strong>Quaternion math:</strong> ensured consistent conventions across prediction, update, and evaluation</li>
+                    <li><strong>Debugging:</strong> validated each component against a classical EKF implementation before enabling learning</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Learnings & Future Work</h2>
+                <ul>
+                    <li>Differentiable filtering bridges model-based estimation and data-driven calibration</li>
+                    <li>Good numerical practices matter as much as the learning objective</li>
+                    <li><strong>Next steps:</strong> differentiable square-root filters, better uncertainty calibration, and multi-sensor updates</li>
+                </ul>
+            </section>
+        </article>
+
+        <footer>
+            <p><a href="../index.html">← Back to home</a></p>
+        </footer>
+    </div>
+</body>
+</html>
