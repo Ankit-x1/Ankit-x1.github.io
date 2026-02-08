@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latency-Aware Vision Model for Edge Devices - Ankit Karki</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="container">
+        <nav><a href="../index.html">← Back to home</a></nav>
+        
+        <article>
+            <h1>Latency-Aware Vision Model for Edge Devices</h1>
+            <p class="tech-stack">PyTorch · PPO · ResNet-18 · Early Exit Networks · Edge AI</p>
+            <p class="links">
+                <a href="https://github.com/Ankit-x1/rl_vision">GitHub Repository</a>
+            </p>
+
+            <section>
+                <h2>Problem</h2>
+                <p>
+                    Edge devices (mobile phones, IoT sensors, embedded systems) cannot afford to run full deep neural 
+                    network inference for every input due to limited compute budgets, battery constraints, and real-time 
+                    requirements. Traditional CNNs use fixed depth for all inputs, wasting computation on "easy" samples 
+                    that don't require deep processing. The challenge: build a system that dynamically adapts 
+                    computation based on input difficulty while maintaining accuracy.
+                </p>
+            </section>
+
+            <section>
+                <h2>Technical Approach</h2>
+                
+                <h3>Architecture</h3>
+                <p>
+                    Dynamic inference system combining early exit networks with reinforcement learning:
+                </p>
+                <ul>
+                    <li><strong>ResNet-18 backbone with early exits:</strong> Intermediate classifiers at multiple 
+                    depths allowing early termination based on confidence</li>
+                    
+                    <li><strong>PPO-based RL agent:</strong> Learns optimal exit decisions balancing accuracy, 
+                    latency, and compute constraints through multi-objective reward shaping</li>
+                </ul>
+                
+                <h3>RL Environment Design</h3>
+                <ul>
+                    <li><strong>State Space:</strong> Confidence (entropy) of current exit, layer index, 
+                    cumulative latency, compute budget remaining</li>
+                    <li><strong>Action Space:</strong> CONTINUE (next layer) or EXIT (use current prediction)</li>
+                    <li><strong>Reward Function:</strong> reward = correct - λ_latency × latency - λ_compute × FLOPs</li>
+                </ul>
+
+                <h3>Training Pipeline</h3>
+                <ul>
+                    <li><strong>Step 1 - Supervised pre-training:</strong> ResNet-18 with all exit heads on 
+                    CIFAR-100 using cross-entropy loss</li>
+                    <li><strong>Step 2 - RL policy training:</strong> PPO learns exit decisions with edge-aware 
+                    constraints (low/medium/high power profiles)</li>
+                    <li><strong>Step 3 - Evaluation:</strong> Metrics across different latency budgets and device profiles</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Results</h2>
+                <ul>
+                    <li><strong>Compute Savings:</strong> 40-60% FLOPs reduction on easy samples with minimal accuracy drop</li>
+                    <li><strong>Latency:</strong> Achieves target budgets (15-50ms) across device profiles</li>
+                    <li><strong>Accuracy:</strong> Within 2-3% of full-depth baseline on CIFAR-100</li>
+                    <li><strong>Adaptive Behavior:</strong> RL policy successfully routes easy/hard inputs to appropriate depths</li>
+                </ul>
+                
+                <p>
+                    Compared to fixed early/late exit strategies, the RL policy achieves Pareto-optimal 
+                    latency-accuracy tradeoffs. Calibration via temperature scaling reduced overconfident 
+                    early exits by 35%.
+                </p>
+            </section>
+
+            <section>
+                <h2>Implementation</h2>
+                
+                <h3>Edge-Aware Configuration</h3>
+                <ul>
+                    <li><strong>Low Power:</strong> 15ms max latency, 50M FLOPs, 65% target accuracy</li>
+                    <li><strong>Medium Power:</strong> 30ms max latency, 150M FLOPs, 75% target accuracy</li>
+                    <li><strong>High Power:</strong> 50ms max latency, 500M FLOPs, 85% target accuracy</li>
+                </ul>
+
+                <h3>Key Challenges</h3>
+                <ul>
+                    <li><strong>Reward engineering:</strong> Balanced α, β, γ weights to prevent premature 
+                    exits while achieving speedup</li>
+                    <li><strong>Overconfident exits:</strong> Solved with temperature scaling calibration</li>
+                    <li><strong>Training stability:</strong> PPO clip parameter tuning for stable convergence</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Learnings & Future Work</h2>
+                <ul>
+                    <li>Dynamic inference provides significant efficiency gains when input difficulty varies</li>
+                    <li>Multi-objective RL enables learning policies that balance competing constraints</li>
+                    <li><strong>Next steps:</strong> Real hardware deployment (Raspberry Pi/Jetson Nano), 
+                    Vision Transformer integration with dynamic token pruning, federated learning for personalized exit strategies</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2>Code & Documentation</h2>
+                <p>
+                    Full implementation available at
+                    <a href="https://github.com/Ankit-x1/rl_vision">GitHub</a>.
+                    Includes training scripts (supervised + RL), evaluation pipeline, configuration files, 
+                    and visualization utilities for exit distribution analysis.
+                </p>
+            </section>
+        </article>
+
+        <footer>
+            <p><a href="../index.html">← Back to home</a></p>
+        </footer>
+    </div>
+</body>
+</html>
